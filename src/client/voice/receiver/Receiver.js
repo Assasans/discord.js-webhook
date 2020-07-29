@@ -1,7 +1,6 @@
 'use strict';
 
 const EventEmitter = require('events');
-const prism = require('prism-media');
 const PacketHandler = require('./PacketHandler');
 const { Error } = require('../../../errors');
 
@@ -38,20 +37,9 @@ class VoiceReceiver extends EventEmitter {
   /**
    * Creates a new audio receiving stream. If a stream already exists for a user, then that stream will be returned
    * rather than generating a new one.
-   * @param {UserResolvable} user The user to start listening to.
-   * @param {ReceiveStreamOptions} options Options.
-   * @returns {ReadableStream}
    */
-  createStream(user, { mode = 'opus', end = 'silence' } = {}) {
-    user = this.connection.client.users.resolve(user);
-    if (!user) throw new Error('VOICE_USER_MISSING');
-    const stream = this.packets.makeStream(user.id, end);
-    if (mode === 'pcm') {
-      const decoder = new prism.opus.Decoder({ channels: 2, rate: 48000, frameSize: 960 });
-      stream.pipe(decoder);
-      return decoder;
-    }
-    return stream;
+  createStream() {
+    throw new Error('Voice support is disabled');
   }
 }
 
